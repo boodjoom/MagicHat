@@ -17,7 +17,7 @@
     Boston, MA 02110-1301 USA */
 
 #include <QtCore>
-#include <QtSpeech>
+#include "QtSpeech.h"
 
 #undef UNICODE
 #include <sapi.h>
@@ -211,6 +211,19 @@ void QtSpeech::say(QString text) const
 {
     Private::WCHAR_Holder w_text(text);
     SysCall( d->voice->Speak( w_text.w, SPF_IS_NOT_XML, 0), LogicError);
+}
+
+//Get voice current rate
+int QtSpeech::getRate() const
+{
+    long rate=0;
+    SysCall( d->voice->GetRate( &rate ), LogicError);
+    return static_cast<int>(rate);
+}
+//Set voice rate [-10;10]
+void QtSpeech::setRate(int rate)
+{
+    SysCall( d->voice->SetRate( static_cast<long>(rate) ), LogicError);
 }
 
 void QtSpeech::timerEvent(QTimerEvent * te)

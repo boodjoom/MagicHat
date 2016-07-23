@@ -14,6 +14,12 @@ MainDialog::MainDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     QtSpeech::VoiceNames vs = QtSpeech::voices();
+    if(vs.isEmpty())
+    {
+        ui->cbVoice->setEditable(false);
+        ui->btnSay->setEnabled(false);
+        ui->sdrRate->setEnabled(false);
+    }
     foreach(QtSpeech::VoiceName vn,vs)
         ui->cbVoice->addItem(vn.name,QVariant::fromValue(vn.id));
 }
@@ -43,6 +49,7 @@ void MainDialog::on_btnSay_clicked()
         name.name=ui->cbVoice->currentText();
         name.id=ui->cbVoice->currentData().value<QString>();
         QtSpeech speech(name, this);
+        speech.setRate(ui->sdrRate->value());
         qDebug()<<"say:"<<fr->text();
         speech.say(fr->text());
     }

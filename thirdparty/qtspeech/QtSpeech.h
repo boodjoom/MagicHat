@@ -58,6 +58,9 @@ public:
     void tell(QString) const;                                   //!< Tell something, asynchronous
     void tell(QString, QObject * obj, const char * slot) const; //!< Tell something, invoke slot at end
 
+    int getRate() const;    //Get voice current rate
+    void setRate(int rate); //Set voice rate [-10;10]
+
 signals:
     void finished();
 
